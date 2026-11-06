@@ -13,3 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "premium-shortcutter"
+include(":app")
+project(":app").projectDir = file(".")
