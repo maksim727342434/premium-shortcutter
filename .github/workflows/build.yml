@@ -10,28 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-    - name: set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew || true
+    - name: Build APK with Gradle Actions
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        arguments: assembleDebug
 
-    - name: Build with Gradle
-      run: |
-        dotnet_installed=$(command -v gradle)
-        if [ -z "$dotnet_installed" ]; then
-          gradle wrapper
-        fi
-        ./gradlew assembleDebug
-
-    - name: Upload APK
+    - name: Upload Finished APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: ShortcutStudio-APK
         path: app/build/outputs/apk/debug/app-debug.apk
